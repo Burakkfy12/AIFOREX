@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "provider": "openai",
+  "model": "gpt-5-pro",
+  "api_key": "REDACTED",
+  "timeout_s": 6
+}
