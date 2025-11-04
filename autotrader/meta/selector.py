@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Tuple
 
-from loguru import logger
+from autotrader.utils.logger import logger
 
 from .bandit import ContextualBandit
 

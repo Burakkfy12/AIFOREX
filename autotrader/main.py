@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import json
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
-from loguru import logger
+from autotrader.utils.logger import logger
 
 from autotrader.feeds import calendar_api, features, feeds_mt5, llm_helper, news_api
 from autotrader.meta.bandit import build_bandit
@@ -43,14 +43,19 @@ def main() -> None:
         "breakout_M30": breakout_m30.get_strategy(),
         "dogu_sar_M15": dogu_sar.get_strategy(),
     }
-    bandit = build_bandit(learning_cfg["bandit"], list(strategies.keys()))
+    bandit_state_path = Path(__file__).resolve().parent / "data" / "registry" / "bandit_state.json"
+    bandit = build_bandit(learning_cfg["bandit"], list(strategies.keys()), state_path=str(bandit_state_path))
     drift = DriftDetector(delta=learning_cfg["drift_detector"]["delta"])
-    risk_engine = RiskEngine(risk_policy)
+    risk_engine = RiskEngine(
+        risk_policy,
+        lot_min=broker_cfg.get("lot_min", risk_policy.lot_min),
+        lot_step=broker_cfg.get("lot_step", risk_policy.lot_step),
+    )
     wf_runner = WalkForwardRunner(learning_cfg["wf_schedule"])
 
     logger.info("Daemon initialised; entering loop")
     while True:
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         account = feed.get_account_info()
         balance = account.get("balance", 0.0)
         equity = account.get("equity", balance)
@@ -117,6 +122,7 @@ def main() -> None:
         order = {"status": "simulated", "ticket": 0}
         reward = 0.0
         bandit.update(chosen, reward, context)
+        bandit.save_state(bandit_state_path)
 
         if drift.update(reward):
             bandit.apply_decay(learning_cfg["decay"]["half_life_trades"])

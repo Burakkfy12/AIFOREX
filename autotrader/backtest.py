@@ -5,7 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from loguru import logger
+from autotrader.utils.logger import logger
 
 from autotrader.feeds import features
 from autotrader.strategies import breakout_m30, dogu_sar, meanrev_m15, trend_m5

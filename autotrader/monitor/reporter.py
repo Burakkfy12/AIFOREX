@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Dict, List
 
 from jinja2 import Environment, FileSystemLoader
-from loguru import logger
+from autotrader.utils.logger import logger
 from telegram import Bot
 
 TEMPLATE_DIR = Path(__file__).resolve().parent

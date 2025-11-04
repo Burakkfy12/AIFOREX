@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
-from loguru import logger
+from autotrader.utils.logger import logger
 
 DB_FILE = Path(__file__).resolve().parent / "autotrader.db"
 SCHEMA_FILE = Path(__file__).resolve().parent / "schemas.sql"

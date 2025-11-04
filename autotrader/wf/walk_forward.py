@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Dict, Tuple
 
 import numpy as np
-from loguru import logger
+from autotrader.utils.logger import logger
 
 from ..storage import store
 from .cv import purged_kfold
