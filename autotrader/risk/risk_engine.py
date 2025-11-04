@@ -1,6 +1,7 @@
 """Risk management utilities for the HANN Autotrader."""
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List
@@ -64,12 +65,30 @@ class RiskEngine:
         return ok
 
     def calc_lot(self, balance: float) -> float:
-        raw = max(self.policy.lot_min, self.policy.lot_min)
+        """Determine the trade lot size according to the configured policy."""
+
+        lot = self.policy.lot_min
+        for bracket in self.policy.lot_policy:
+            min_balance = float(bracket.get("balance_min", -math.inf))
+            max_balance = float(bracket.get("balance_max", math.inf))
+            if min_balance <= balance < max_balance:
+                lot = float(bracket.get("lot", lot))
+        lot = max(lot, self.policy.lot_min)
+
         step = self.policy.lot_step or 0.01
-        rounded = round(raw / step) * step
-        rounded = max(self.policy.lot_min, rounded)
+        if step <= 0:
+            step = 0.01
+        # Round to the nearest allowed step while avoiding floating point drift.
+        scaled = round(lot / step)
+        rounded = max(self.policy.lot_min, scaled * step)
         rounded = round(rounded, 6)
-        logger.debug("Calculated lot %.4f (rounded %.4f) for balance %.2f", raw, rounded, balance)
+        logger.debug(
+            "Calculated lot %.4f (rounded %.4f) for balance %.2f with step %.4f",
+            lot,
+            rounded,
+            balance,
+            step,
+        )
         return rounded
 
     def news_blackout(self, now_utc: datetime, events: Iterable[dict[str, Any]]) -> bool:
