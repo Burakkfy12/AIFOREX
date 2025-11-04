@@ -1,0 +1,28 @@
+{
+  "symbol": "XAUUSD",
+  "daily_max_drawdown_pct": 10,
+  "max_positions": 1,
+  "per_trade_risk_pct": 1.0,
+  "spread_max_points": 35,
+  "news_blackout_minutes": 20,
+  "atr_stop_mult": 1.8,
+  "atr_trail_mult": 1.2,
+  "max_slippage_points": 30,
+  "min_stop_distance_points": 100,
+  "lot_min": 0.01,
+  "lot_step": 0.01,
+  "important_events": [
+    "US_CPI",
+    "US_NFP",
+    "FOMC",
+    "US_PPI",
+    "US_GDP"
+  ],
+  "lot_policy": [
+    {"balance_max": 100, "lot": 0.05},
+    {"balance_min": 100, "balance_max": 500, "lot": 0.1},
+    {"balance_min": 500, "balance_max": 1000, "lot": 0.5},
+    {"balance_min": 1000, "balance_max": 2000, "lot": 1.0}
+  ],
+  "kill_switch_on_broker_error": true
+}

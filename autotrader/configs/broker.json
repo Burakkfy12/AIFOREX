@@ -1,0 +1,10 @@
+{
+  "server": "FBS-Demo",
+  "login": 12345678,
+  "password": "REDACTED",
+  "symbol": "XAUUSD",
+  "timeframes": ["M1", "M5", "M15", "M30", "H1"],
+  "lot_min": 0.01,
+  "lot_step": 0.01,
+  "slippage_points": 30
+}
