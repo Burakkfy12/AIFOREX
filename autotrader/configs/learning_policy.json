@@ -1,0 +1,8 @@
+{
+  "bandit": {"algo": "thompson", "reward": "pnl_over_atr", "prior_alpha": 1.0, "prior_beta": 1.0},
+  "context_features": ["atr", "trend_score", "spread", "session_code", "llm_news_bias", "news_uncertainty", "calendar_surprise_z"],
+  "decay": {"enabled": true, "half_life_trades": 200},
+  "drift_detector": {"type": "adwin", "delta": 0.002},
+  "wf_schedule": {"frequency": "weekly", "train_window_days": 90, "test_window_days": 14},
+  "shadow_deploy": {"min_trades": 60, "min_sharpe": 0.8, "max_mdd_pct": 8}
+}

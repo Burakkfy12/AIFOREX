@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>HANN Autotrader Report</title>
+</head>
+<body>
+  <h1>HANN Autotrader Report</h1>
+  <p>Generated: {{ generated }}</p>
+  <h2>Metrics</h2>
+  <ul>
+  {% for key, value in metrics.items() %}
+    <li>{{ key }}: {{ value }}</li>
+  {% endfor %}
+  </ul>
+  <h2>Recent Trades</h2>
+  <table border="1" cellspacing="0" cellpadding="4">
+    <tr>
+      <th>Open</th><th>Close</th><th>Strategy</th><th>Direction</th><th>PNL</th>
+    </tr>
+  {% for trade in trades %}
+    <tr>
+      <td>{{ trade.ts_open }}</td>
+      <td>{{ trade.ts_close }}</td>
+      <td>{{ trade.strategy }}</td>
+      <td>{{ trade.direction }}</td>
+      <td>{{ trade.pnl }}</td>
+    </tr>
+  {% endfor %}
+  </table>
+</body>
+</html>

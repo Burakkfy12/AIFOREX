@@ -1,0 +1,5 @@
+{
+  "calendar_api": {"provider": "LICENSED_VENDOR", "api_key": "REDACTED"},
+  "news_api": {"provider": "LICENSED_VENDOR", "api_key": "REDACTED"},
+  "important_events": ["US_CPI", "US_NFP", "FOMC", "US_PPI", "US_GDP"]
+}
